@@ -1,0 +1,25 @@
+baseURL		  = "http://yulunzeng.me/"
+languageCode 	  = "en-US"
+
+description 	  = "Personal website of Yulun Zeng"
+
+disqusShortname   = "yulunzeng"
+enableEmoji 	  = true
+builddrafts	  = false
+author		  = "Yulun Zeng"
+title		  = "Yulun Zeng"
+faviconfile	  = ""
+
+[[menu.main]]
+name		  = "About"
+weight		  = -120
+identifier	  = "about"
+url		  = "/about/"
+
+[params]
+i18n_flags	  = true
+linkedin	  = "//linkedin.com/in/yulunzeng"
+twitter		  = "//twitter.com/ligerleng"
+author		  = "花间一壶酒"
+avatar		  = "img/profile-4.jpg"
+noshowreadtime	  = true
