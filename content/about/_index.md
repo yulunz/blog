@@ -1,6 +1,7 @@
 ---
 date: 2017-09-20T22:20:19-05:00
 draft: false
+title: "About"
 ---
 
 At college I was crazy about math tools that solve real problems. I did so much that it finally shocks me when I become a software engineer at graduation. 
