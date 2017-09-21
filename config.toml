@@ -23,7 +23,6 @@ identifier	  = "blog"
 url		  = "/blog/"
 
 [params]
-i18n_flags	  = false
 linkedin	  = "//linkedin.com/in/yulunzeng"
 twitter		  = "//twitter.com/ligerleng"
 author		  = "花间一壶酒"
