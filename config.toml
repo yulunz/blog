@@ -1,14 +1,13 @@
 baseURL		  = "/"
 languageCode 	  = "en-US"
-
 description 	  = "Personal website of Yulun Zeng"
-
-disqusShortname   = "yulunzeng"
 enableEmoji 	  = true
 builddrafts	  = false
 author		  = "Yulun Zeng"
 title		  = "Yulun Zeng"
 faviconfile	  = ""
+disqusShortname   = "yulunzeng"
+googleAnalytics	  = "UA-108088773-1"
 
 [[menu.main]]
 name		  = "About"
@@ -25,6 +24,7 @@ url		  = "blog/"
 [params]
 linkedin	  = "//linkedin.com/in/yulunzeng"
 twitter		  = "//twitter.com/ligerleng"
+github		  = "//github.com/yulunz"
 author		  = "花间一壶酒"
 avatar		  = "img/profile-4.jpg"
 noshowreadtime	  = true
