@@ -28,3 +28,4 @@ github		  = "//github.com/yulunz"
 author		  = "花间一壶酒"
 avatar		  = "img/profile-4.jpg"
 noshowreadtime	  = true
+faviconfile	  = "img/dummyPicTrans.png"
