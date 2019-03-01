@@ -4,10 +4,6 @@ draft: false
 title: "About"
 ---
 
-At college I was crazy about math tools that solve real problems. I did so much that it finally shocks me when I become a software engineer at graduation. 
+Welcome to the blog of Yulun Zeng.
 
-But it is not so much a shock when I realized ultimately theories will need to go into implementation to create value. The new statistician, or software engineer is these who have both. 
-
-> 要坚持两手抓，两只手都要硬。
-
-
+Yulun is a _very_ responsible adult who is interested in food, coffee, taking pictures, Statistics, and occasionally software developing, which very unfortunately becomes his profession.
