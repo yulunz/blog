@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>A Very Succint Overview Of Topics In Casella & Berger - Chapter I | The Responsible Adult</title>
+
+    <link href="static/blog.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">    
+
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+  <body>
+    <div id="main" class="">
+<h1>A Very Succint Overview Of Topics In Casella & Berger - Chapter I</h1>
+<i>2018-12-20</i>
+
+
+My high school Physics teacher once said the __first stage__ of learning is to be able to summarise what you learned into a succint list, and __the second stage__ is to expand those bullet points back to their full contents, all under your own understanding. This is very much the ideal approach for Physics since it tries to abstract out complex phenomenons to very simple and elegant equations. However being able to understand those simple forms at their full scale is no easy task. Here I would like to try the same approach to learning Statistics using one of the classic introductory yet inspiring and comprehensive texts, _Statistical Inference_, by George Casella, and Roger Berger.
+
+We will focus on getting through the initial stage of condensing the knowledge into short and intuitive explainations, with necessary, but minimal Mathematical language. We will aim at those who still knows the very basics of calculus, wished they could have better prepared themselves for [whatever](https://www.google.com/search?q=what+is+the+difference+between+machine+learning+AI+data+science+IoT+block+chains) that is trending in the tech scene, but don't want to go through the full rigor. I will copy and paste important conclusions so that the reader does not need to have a copy of the text at hand. The reader is reminded of the fact that the study of theory is itself highly satisfying - when everything _click_, of course. So try to get it to _click_; this would provide incentives to make further progress.
+
+So let's get started with Chapter I: Probability Theory.
+
+__Definition 1.1.1__ The set, `$S$`, of all possible outcomes of a particular experiemnt is called the _sample space_ for the experiment.
+
+__Definition 1.1.2__ An _event_ is any collection of possible outcomes of an experiment, that is, any subset of `$S$` (including itself).
+
+
+Notice the difference in definition between an event and an outcome of an experiment.
+
+__Theorem 1.1.4__ (Outlines the _commutativity_, _associativity_, the _distributive laws_, and the _DeMorgan Laws_ of _union_ and _intersection_ of events). See [here](https://en.wikipedia.org/wiki/De_Morgan%27s_laws#Formal_proof) for a proof of the DeMorgan Laws by proving the event on both sides are subsets of the event in the other side, using contradiction.
+
+__Theorem 1.2.4 (Axioms of Probability)__ Given a sample space `$S$` and an associated sigma algebra `$\mathcal{B}$`, a _probability function_ is a function `$P$` with domain `$\mathcal{B}$` that satisfies
+
+1. `$P(A) \geq 0$` for all `$A \in B$`.
+2. `$P(S) = 1$`.
+3. If `$A_1, \, A_2, \cdots \in \mathcal{B}$` are pairwise disjoint (mutually exclusive), then `$P(\cup_{i=1}^{\infty} A_i) = \sum_{i=1}^{\infty} A_i$`.
+
+Skipping definition of Sigma Algebra's since measure theory based intro is not a goal.
+
+__Theorem 1.2.9__:
+
+1. `$P(B \cap A^{c}) = P(B) - P(A\cap B)$`
+2. `$P(A \cup B) = P(A) + P(B) - P(A \cap B)$`
+3. `$\cdots$`
+
+__Bonferroni's Inequality__: `$P(A \cap B) \geq P(A) + P(B) - 1$`. This is from the second bullet in 1.2.9. 
+
+Apply Bonferroni's Inequality for `$A_{1}, \cdots, A_{n}$`:
+<div>$$P\big(\bigcap_{i} A_i\big) \geq\sum_i P(A_i) - (n-1)$$</div>
+
+
+
+    <span id="copyright">© The Responsible Adult 2017 - 2024</span>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Where Should I Stand When Waiting For Elevators | The Responsible Adult</title>
+
+    <link href="static/blog.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">    
+
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+  <body>
+    <div id="main" class="">
+<h1>Where Should I Stand When Waiting For Elevators</h1>
+<i>2017-11-12</i>
+
+
+<h2>Introduction</h2>
+
+<p>
+  Elevator scheduling does not depend on where people stand. You pushed the button
+  on one side, then "<i>ding!</i> ", a flashing green light on the other end means you will
+  have to walk. People would just stand in random positions hoping elevators will hit
+  their guesses. However randomness is not our best friend, and here I am proposing a
+  scientific way to decide where you should stand while waiting for elevators.
+</p>
+
+<p><i>If you do not like theories, you may skip the rest and go to the code (to be added) now.</i></p>
+
+<p><i>
+  If you do not like codes as well, that is all I have for you and you may now click wherever
+  the little cross is to close this tab. Thank you.
+</i></p>
+
+<h2>The Math</h2>
+
+Suppose we have \(K\) elevators, lined up on one side, in the lobby in total. Let \(X\) be a random
+variable of categorical distribution with \(K\) classes numbered from 1 to \(K\), with a probability vector \({\bf p}\),
+
+$$X \ | \ {\bf p} \sim \mbox{Categorical}({\bf p})$$
+
+\({\bf p}\) records prior information with
+
+$${\bf p} \ | \ \alpha \sim \mbox{Dirichlet}(\alpha)$$
+
+\(\alpha\) is the vector of hyperparameters. Suppose we have a flat Dirichlet distribution to begin with, that is, \(\alpha_0 = {\bf 1}\).
+
+Suppose we have a historical record of arrival count for all \(K\) elevators. Let it be \({\bf c}\), we would update the prior distribution using
+
+$${\bf p} \ | \ \alpha \sim \mbox{Dirichlet}(\alpha_0 + {\bf c})$$
+
+Then the probability of elevator \(i\) arrives for you is expected to be
+
+$$\mathbb{E}(p_i \ | \ {\bf c}, \ \alpha) = \frac{c_i + \alpha_i}{\sum_m c_m + \sum_n \alpha_n} = \frac{c_i + 1}{N + K}$$
+
+where \(N\) is total number of historical arrivals. 
+
+Suppose \(x \in [0,1]\) is a representation of where you should stand. For example, \(x = 0\) can mean you should stand at the
+very left of the lobby and \(x = 1/2\) would then mean you should stand right in the middle of the lobby, and so on. And the elevators
+are spaced equally in the lobby. We want to minize the expected walking distance from where you are standing to the arriving elevator,
+by solving following optimization problem,
+
+$$\underset{x}\min  \quad \sum_{i = 0}^{K-1} \left|x - \frac{i}{K-1}\right|\cdot \frac{c_i + 1}{N + K}$$
+$$\mbox{s.t.} \quad 0 \leq x \leq 1$$
+
+Of course this will blow up if there is only one elevator and you want to know where you should f***ing stand. To solve, let 
+
+$$y_i = \left|x - \frac{i}{K-1}\right|$$
+
+The equivalent LP will be,
+
+$$\underset{x}\min  \quad y_i\cdot \frac{c_i + 1}{N + K}$$
+$$\mbox{s.t.} \quad x - \frac{i}{K-1} \leq y_i, \quad\quad \mbox{for $i = 0\cdots K-1$}$$
+$$\quad \quad -x + \frac{i}{K-1} \leq y_i, \quad\quad \mbox{for $i = 0\cdots K-1$}$$
+$$0 \leq x \leq 1$$
+
+And this can be easily solved, for example, using interior point method.
+
+<h2>To Be Added</h2>
+
+<ol>
+  <li>The case where both sides have elevators in the lobby.</li>
+  <li>The case where you are floating in the air in the center of a spherical lobby, and elevators , or better, the teleports, are locating on the surface of the sphere.</li>
+  <li>I used expectations, but we have much more in the posterior. Optimization can be done instead with probabilistic variables directly.</li>
+</ol>
+
+    <span id="copyright">© The Responsible Adult 2017 - 2024</span>
+    </div>
+  </body>
+</html>

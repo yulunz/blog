@@ -1,0 +1,95 @@
+title: A Quick Note on Export Administration Regulations (EAR)
+date: 2018-01-05
+---
+
+<p>
+  Working as a software engineer doesn't mean just writing code. At least
+  from my experience a good part of the work involves trying to sell and
+  deploy and product, sometimes to customers overseas, which would require
+  us to determine if our product is subject to <i>Export Administration Regulations</i>,
+  or EAR. This will be a short summary of EAR for software engineers.
+</p>
+
+<h2>Qualification</h2>
+
+<p>
+  The United States regulates export activities, especially for what is called
+  "dual-use" items, which means those can be used for civilian and military
+  purposes at the same time. <i>The Bureau of Industry and Security</i>, or BIS,
+  administers EAR and
+  <a href="https://www.bis.doc.gov/index.php/regulations/export-administration-regulations-ear">
+    publishes its definitions</a>.
+  § 734.3 describes what kinds of export products are subject to the EAR. Quote (partial),
+</p>
+
+<p>
+<blockquote>
+<ol>
+  <li>All items in the Unite States, including [...]</li>
+  <li>All U.S. origin items wherever located.</li>
+  <li>[Essentially saying foreign goods that use US parts.]</li>
+  <li>[A Special clause.]</li>
+</ol>
+</blockquote>
+</p>
+
+<p>
+  which basically means every US-related products no matter within or outside of the US. This
+  makes sense since the government do not want any likely "dual-use" items to be exempted from
+  EAR. For this reason software export is automatically under the control of EAR.
+</p>
+
+<h2>ECCN</h2>
+
+<p>
+  <i>Export Control Classification Number</i>, or ECCN, tells the BIS what kind of "dual-use"
+  item your product is. The product can either be classified under one of the
+  <a href="https://www.bis.doc.gov/index.php/forms-documents/regulations-docs/13-commerce-control-list-index/file">
+    published ECCN's</a>
+  in the <i>Commerce Control List</i>, or the CCL, or classified to EAR99, which contains products
+  that are subject to the EAR but not found on the CCL. In layman's terms, this is saying, again,
+  all products are under EAR, but only those which can potentially be used with military purposes
+  should be assigned an ECCN, otherwise you are assigned EAR99 as your ECCN code.
+</p>
+
+<p>Some interesting entries in the CCL:</p>
+
+<ul>
+  <li>Western red cedar.</li>
+  <li>Clean room filters.</li>
+  <li>Joy sticks.</li>
+  <li>Neural network integrated circuits.</li>
+</ul>
+
+<p>but mostly the CCL contains military items.</p>
+
+<h2>Determining ECCN</h2>
+
+<p>
+  According to <a href="https://www.bis.doc.gov/index.php/licensing/commerce-control-list-classification">this page</a>,
+  there are 3 ways to determine the ECCN for the product,
+</p>
+
+<ol>
+    <li>Go to the source. <i>[Meaning ask the manufacturer.]</i></li>
+    <li>Self-classify.</li>
+    <li><i>[Essentially ask the BIS for help.]</i></li>
+</ol>
+
+<p>
+  For a piece of software, the developers are the manufacturer, and I suppose asking the BIS
+  will be a long effort. Self-classify is more practical. 
+</p>
+
+<p>
+  In the end, if the product is subject to one of the ECCN's, a license is needed. If the
+  product is EAR99, then it will need, quote, a "license exception NLR specifying no license is
+  required". However, if the product is exported to the enemies of the United States, it always
+  need a license regardless of what code the product is under. See the same link (immediate above)
+  for details. This is saying the US won't give its enemies s\*\*t let alone military items.
+</p>
+
+<i>
+  Please consume at your own risk. The author is not a law professional and does not assume legal
+  responsibility for materials within this article.
+</i>

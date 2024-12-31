@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>TL; DR: How Does HTTPS Work? | The Responsible Adult</title>
+
+    <link href="static/blog.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">    
+
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+  <body>
+    <div id="main" class="">
+<h1>TL; DR: How Does HTTPS Work?</h1>
+<i>2021-06-12</i>
+
+
+<p>On a high level, HTTPS says if you trust a list of organizations that everybody else trusts, it provides an automatic way to extend your trust to any website that is certified by these organizations.</p>
+
+<p>It doesn't say as long as you are using HTTPS, you are safe. Because if you trust the wrong organizations in the first place, whatever website it certifies is not trustworthy as well. Trash in, trash out.</p>
+
+<p>To be more specific, we should first understand what's asymmetric authentication, but even before that, we should start with symmetric authentication. Suppose that Ann and Bob are sending SMS that they don't want others to know about. One way to do this is to share a key beforehand, and the sender will encrypt the message using the <b>same</b> key that the receiver will also use to decrypt the message once received. The issue is if they are not careful when sharing this key initially, then a third person like Chris can also talk to Ann using this key, and Ann would have no way to know whether it's Bob or Chris.</p>
+
+<p>Given this, asymmetric authentication uses a pair of keys, a public key, and a private key. If one changes, the other has to change correspondingly. In this case Ann and Bob each keep their own private key, but shares the public key with the other party. When sending a message, the message is encrypted with the private key, but the receiver will decrypt using the sender's public key. So that if Chris knows both their public keys, the maximum he can do is knowing what Ann and Bob are talking about. Chris cannot pretend to be Bob, because Bob's private key is never shared. So when Ann receives a message, with Bob's public key, she always knows this is from the real Bob or not.</p>
+
+<p>As internet's end users, we always want to receive information from the real Bobs. However there are millions and millions of websites, it's not feasible to get millions and millions of public keys, plus Chris's can pretend to be Bob each time a Bob is trying to share a public key. Here we would need a "Certificate Authority", or CA, to help us.</p>
+
+<p>So instead of getting millions and millions of public keys from every website, we instead just need to get public keys from each certificate authority. There are only a small number of commonly used ones. I have about 130 of them on my machine. A certificate authority gives the real website owner a certificate. The certificate includes information like the domain name, expiry date, etc, and the real owner's public key. It also includes a "signature", which is an encryption of these information using the CA's private key. So myself with the CA's public key is able to decrypt the signature and check if the result matches the information above. If so, I know that this CA's has reviewed this website, and I can use the public key in the certificate to decrypt information I received from the website.</p>
+
+<p>If a hacker like Chris forges a certificate himself, he is not going to fill in a valid signature value without the CA's private key. After Ann receives the real certificate and starts to talk with Bob, it is also not possible for Chris to send a bogus message to Ann, because now Ann has the real public key of Bob from the certificate, and Chris doesn't have Bob's private key.</p>
+
+<p>Under this mechanism, which in the internet is referred to as HTTPS, Ann will be able to talk to a lot of real Bobs, and Chris will have very little chance to pretend to be any one of them.</p>
+
+<p><b>Some more notes:</b></p>
+
+<p>The certificate will expire after a while - currently this will be one year. So that website owners will need to obtain new certificates from the CAs. Otherwise users will see from the browser that "this website's certificate has expired, and it's not safe to continue to view its content". The reason being there might be certain design defects and / or improvements needed in the certificate. Issuing new certificate will help address these issues.</p>
+
+<p>Some website will send a "self-signed" certificate. That is, the signature is produced using it's own private key, instead of the CA's. Self-signed is weaker than a CA-signed certificate, because here, Chris will be able to forge a certificate and have Ann believing that she is talking to Bob. However if Ann already has the real Bob's public key through a real certificate, it's not possible for Chris to pretend to be Bob. User should not trust a website's self-signed certificate.</p>
+
+<p>Digicert is a large commercial CA. However there are more open source friendly CAs like <a href="https://letsencrypt.org">Let's Encrypt</a>, where you can get certificates and renewals for free.</p>
+
+<p>The certificate is usually the <a href="https://en.wikipedia.org/wiki/X.509">X.509 certificate</a>.</p> 
+
+    <span id="copyright">© The Responsible Adult 2017 - 2024</span>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+code {
+  white-space: pre;
+}
+
+.blog-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.blog-list {
+  padding: 0;
+}
+
+html {
+  background: #fffcf6;
+
+  font-family: "Nunito Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "wdth" 100, "YTLC" 500;;
+}
+
+.zh-cn {
+  line-height: 1.75;
+}
+
+p {
+  margin: 40px 0;
+}
+
+a {
+  color: #5353ff;
+}
+
+#copyright {
+  color: gray;
+  font-size: 14px;
+  position: relative;
+  bottom: 0;
+  margin-bottom: 10px;
+}
+
+@media only screen and (min-width: 1025px) {
+  #main {
+    margin: 0 25%;
+  }
+
+  .blog-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  #main {
+    margin: 0 10%;
+  }
+ 
+  .blog-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+}
