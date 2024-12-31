@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Quick Tutorial To Advanced SQL | The Responsible Adult</title>
+
+    <link href="static/blog.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">    
+
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+  <body>
+    <div id="main" class="">
+<h1>Quick Tutorial To Advanced SQL</h1>
+<i>2021-12-23</i>
+
+
+<p>
+  Everybody knows the basics, and yet the more advanced tricks are only learned when we need it. Here is a
+  systematic overview of the more common patterns in what's usually considered "advanced SQL". We will use
+  PostgreSQL syntax as an example (MySQL, and T-SQL are similar enough), and start from the easier ones,
+  but quickly advance to more difficult ones.
+</p>
+
+<h2>Set Up</h2>
+
+<p>
+  This is intended for interactive practice. Once a Postgre server is setup, insert some data using
+  <a href="https://github.com/yulunz/sql_tutorial/blob/main/prepare_data.sql">this script</a>.
+</p>
+
+<h3>How many cats are in this table?</h3>
+
+<code>select count(1) from cats;
+</code>
+
+<h3>How many kinds of cats are in this table?</h3>
+
+<code>select count(distinct kind) from cats;
+</code>
+
+<h3>How many cats are `Grey`?</h3>
+
+<code>select count(1) from cats where color = 'Grey';
+</code>
+
+<h3>How many cats' names end with "e"?</h3>
+
+<code>select count(1) from cats where name like '%e';
+</code>
+
+<h3>What's the name of the oldest cat, and how old is it?</h3>
+
+<code>select name, age from cats order by age desc limit 1;
+</code>
+
+<h3>Which is the heaviest Maine Coon, and how heavy is it?</h3>
+
+<code>select
+  name, weight
+from cats
+where kind = 'Maine Coon'
+order by weight desc
+limit 1;
+</code>
+
+<h3>Which cat is the heaviest un-neutered cat?</h3>
+
+<code>select name
+from cats
+where is_neutered is FALSE
+order by weight
+desc limit 1;
+</code>
+
+<h3>What are all neutered "Domestic", and "Persian" cats?</h3>
+
+<code>select * from cats
+where
+  is_neutered is TRUE and
+  kind in ('Domestic', 'Persian');
+</code>
+
+<h3>What are the average weights per kind? Can you order them from most heavy on average and least heavy on average?</h3>
+
+<code>select kind, avg(weight)
+from cats
+group by 1
+order by avg desc;
+</code>
+
+<h3>What are the kinds of cats of which the minimum weight is more than 7 lbs?</h3>
+
+<code>select kind, min(weight)
+from cats
+group by 1
+having min(weight) > 7;
+</code>
+
+<h3>How many cats are added each year?</h3>
+
+<code>select extract(year from added_time), count(1)
+from cats
+group by 1;
+</code>
+
+<h3>List the cat names and their owner names by joining with the "owners" table.</h3>
+
+<code>select
+  c.name as cat_name,
+  o.name as owner_name
+from cats c
+left join owners o
+on c.owner = o.name;
+</code>
+
+<h3>List all cats whose best friend is of a different color.</h3>
+
+<code>select
+  c1.name,
+  c1.color,
+  c1.best_friend,
+  c2.color as best_friend_color
+from cats c1
+left join cats c2
+on c1.best_friend = c2.name
+where c1.color != c2.color;
+</code>
+
+<h3>Which kind has the largest range of weights?</h3>
+
+<code>with w as (
+  select kind, max(weight)-min(weight) as range
+  from cats
+  group by 1
+)
+select * from w order by range desc limit 1;
+</code>
+
+<h3>What's the percentage of cats that are neutered?</h3>
+
+In PostgreSQL, you can cast an integer type to float by appending `::float` to it. In other SQL variant, you might be able to do so by `* 1.0`.
+
+<br>
+<code>
+select
+  sum(
+    case
+      when is_neutered is TRUE then 1
+      else 0
+    end
+  )::float / count(1) as pct_neutered
+from cats;
+</code>
+
+<h3>Which is the heaviest cat per kind?</h3>
+
+Here is a slightly challenging one. First we need to find the maximum weight per kind. This is done by using the `max` function over each "window" partitioned by `kind`. After having the max's we just need to select only those having their weights equal to the max of that kind.
+
+<br>
+<code>
+select kind, name, weight
+from (
+  select
+    kind, name, weight,
+    max(weight) over (partition by kind) as max_weight
+  from cats
+) t
+where weight = max_weight;
+</code>
+
+Alternatively,
+
+<br>
+<code>
+with t as (
+  select
+    kind, name, weight,
+    max(weight) over (partition by kind) as max_weight
+  from cats
+)
+select kind, name, weight from t
+where weight = max_weight;
+</code>
+
+<h3>Which cat was added the earliest per kind?</h3>
+
+Same trick as above.
+<br>
+<code>
+select kind, name, added_time from (
+  select
+    kind, name, added_time,
+    min(added_time) over (partition by kind) as min_added
+  from cats
+) t
+where min_added = added_time;
+</code>
+
+<h3>Which cat was added before Billie?</h3>
+
+We need to give a ranking number per `added_time`, then find the rank of Billie, and find the cat that has that rank minus 1.
+<br>
+<code>
+with ranked as (
+  select
+    *,
+    row_number() over (order by added_time asc) as rank
+  from cats
+)
+select
+  name
+from ranked
+where rank = (
+  select rank-1 from ranked where name = 'Billie'
+);
+</code>
+
+Alternatively we can use the `lag` function on name.
+<br>
+<code>
+select last from (
+  select
+    name,
+    lag(name) over (order by added_time asc) as last
+  from cats
+) t
+where name = 'Billie';
+</code>
+
+<h3>What's the percentage for each color? Replace NULL with "Unknown".</h3>
+
+Use <code>coalesce</code> function to replace NULL.
+<br>
+<code>
+select
+  coalesce(color, 'Unknown') as color,
+  count(1)::float/(select count(1) from cats) as percentage
+from cats
+group by 1;
+</code>
+
+<h3>What's the percentage of color per kind? Replace NULL with "Unknown".</h3>
+
+We need three columns: kind, color, percentage. The percentages for each kind must add up to 100%.
+<br>
+<code>
+with color_ct as (
+  select
+    kind,
+    coalesce(color, 'Unknown') as color,
+    count(1) as ct
+  from cats
+  group by 1, 2
+)
+select
+  kind,
+  color,
+  ct::float / sum(ct) over (partition by kind) as percentage
+from color_ct;
+</code>
+
+    <span id="copyright">© The Responsible Adult 2017 - 2024</span>
+    </div>
+  </body>
+</html>
